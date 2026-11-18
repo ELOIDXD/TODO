@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "D:\\Amir\\Programming\\TODO\\TODO\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{77F13897-188F-495E-A496-C7E5552A27DA}|TODO.csproj|d:\\amir\\programming\\todo\\todo\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{77F13897-188F-495E-A496-C7E5552A27DA}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|d:\\amir\\programming\\todo\\todo\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{77F13897-188F-495E-A496-C7E5552A27DA}|TODO.csproj|d:\\amir\\programming\\todo\\todo\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77F13897-188F-495E-A496-C7E5552A27DA}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|D:\\Amir\\Programming\\TODO\\TODO\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77F13897-188F-495E-A496-C7E5552A27DA}|TODO.csproj|D:\\Amir\\Programming\\TODO\\TODO\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{77F13897-188F-495E-A496-C7E5552A27DA}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,29 +30,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs*",
               "RelativeToolTip": "Form1.cs*",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAuwHMAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAiwHkAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-17T12:01:36.499Z",
+              "WhenOpened": "2026-11-18T07:05:37.391Z",
               "EditorCaption": "",
               "OwnerCaption": "%2"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs [Design]*",
               "RelativeToolTip": "Form1.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-17T11:43:56.167Z",
+              "WhenOpened": "2026-11-18T06:24:04.157Z",
               "EditorCaption": " [Design]",
+              "OwnerCaption": "%2"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-17T11:43:56.167Z",
               "OwnerCaption": "%2"
             }
           ]

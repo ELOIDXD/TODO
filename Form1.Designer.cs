@@ -30,6 +30,7 @@
         {
             dataGridView1 = new DataGridView();
             btnAddDay = new Button();
+            btnAddTask = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -42,6 +43,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(820, 468);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             // 
             // btnAddDay
             // 
@@ -52,12 +54,22 @@
             btnAddDay.Text = "+ Add Day";
             btnAddDay.UseVisualStyleBackColor = true;
             // 
+            // btnAddTask
+            // 
+            btnAddTask.Location = new Point(676, 5);
+            btnAddTask.Name = "btnAddTask";
+            btnAddTask.Size = new Size(75, 23);
+            btnAddTask.TabIndex = 2;
+            btnAddTask.Text = "+ Add Task";
+            btnAddTask.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(844, 514);
+            Controls.Add(btnAddTask);
             Controls.Add(btnAddDay);
             Controls.Add(dataGridView1);
             Name = "Form1";
@@ -71,5 +83,6 @@
 
         private DataGridView dataGridView1;
         private Button btnAddDay;
+        private Button btnAddTask;
     }
 }
