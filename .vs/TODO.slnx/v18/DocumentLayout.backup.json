@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|d:\\amir\\programming\\todo\\todo\\todo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|solutionrelative:todo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|D:\\Amir\\Programming\\TODO\\TODO\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F2BEBB86-84FD-DB26-135C-E5D63312FA91}|TODO.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -22,11 +26,29 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TODO.cs",
+              "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\TODO.cs",
+              "RelativeDocumentMoniker": "TODO.cs",
+              "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\TODO.cs",
+              "RelativeToolTip": "TODO.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAiwCoAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-18T08:13:24.6Z",
+              "EditorCaption": "",
+              "OwnerCaption": "%2"
             },
             {
               "$type": "Document",
@@ -34,9 +56,9 @@
               "Title": "Form1.cs",
               "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs*",
-              "RelativeToolTip": "Form1.cs*",
-              "ViewState": "AgIAAFgAAAAAAAAAAAAiwHkAAAAqAAAAAAAAAA==",
+              "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAAAFcAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-18T07:05:37.391Z",
               "EditorCaption": "",
@@ -44,12 +66,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs [Design]*",
-              "RelativeToolTip": "Form1.cs [Design]*",
+              "ToolTip": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-18T06:24:04.157Z",
               "EditorCaption": " [Design]",
@@ -57,7 +79,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "D:\\Amir\\Programming\\TODO\\TODO\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",

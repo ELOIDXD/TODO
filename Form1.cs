@@ -1,26 +1,52 @@
 using System;
+using System.IO;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Text.Json;
 using System.Configuration;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Runtime;
+
 
 namespace TODO
 {
     public partial class Form1 : Form
     {
-        private int dayColumnNumber = 0;
+        
         private int selectedTaskRow = -1;
 
         private ContextMenuStrip taskOptionsMenu = new ContextMenuStrip();
+
+        private TODO todoData = new TODO();
+        
+        private bool isLoadingData = false;
+
+        private readonly string saveFilePatch =
+            Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData), "TODO", "todo-data.json");
         public Form1()
         {
             InitializeComponent();
 
             ConfigureGrid();
 
+            LoadData();
+
+            BuildGridFromData();
+
             btnAddDay.Click += BtnAddDay_Click;
             btnAddTask.Click += btnAddTask_Click;
 
             dataGridView1.CellContentClick += DataGridView1_CellContentClick;
+
+            dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
+
+            dataGridView1.CellValueChanged += DataGridView1_CellEndEdit;
+
+            dataGridView1.CurrentCellDirtyStateChanged += DataGridView1_CurrentCellDirtyStateChanged;
+
+            FormClosing += Form1_FormClosing;
 
             taskOptionsMenu.Items.Add("Delete Task", null, DeleteTask_Click);
         }
@@ -59,7 +85,7 @@ namespace TODO
             optionsColumn.Width = 45;
             optionsColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            dataGridView1.Columns.Add(optionsColumn);
+            
             // Options column.
             DataGridViewButtonColumn OptionsColumn =
                 new DataGridViewButtonColumn();
@@ -72,23 +98,104 @@ namespace TODO
             optionsColumn.SortMode =
                 DataGridViewColumnSortMode.NotSortable;
 
-           
-
-            // Add today's date after the options column exists.
-            AddDayColumn(DateTime.Today.ToString("M/d"));
+            dataGridView1.Columns.Add(optionsColumn);
         }
 
-        private void AddDayColumn(string title)
+        private void LoadData()
         {
-            dayColumnNumber++;
+            if(File.Exists(saveFilePatch))
+            {
+                try
+                {
+                    string json = File.ReadAllText(saveFilePatch);
+
+                    TODO? LoadedData = JsonSerializer.Deserialize<TODO>(json);
+
+                    if (LoadedData != null)
+                    {
+                        todoData = LoadedData;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Could not load saved data:\n" + ex.Message,
+                        "Loading Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    todoData = new TODO();
+                }
+            }
+
+            todoData.Days ??= new List<DayItem>();
+            todoData.Tasks ??= new List<TaskItem>();
+            todoData.settings ??= new AppSettings();
+
+            foreach (TaskItem task in todoData.Tasks)
+            {
+                task.CompletedDays??= new Dictionary<string, bool>();
+            }
+
+            if (todoData.Days.Count == 0)
+            {
+                todoData.Days.Add(
+                    new DayItem
+                    {
+                        Title = DateTime.Today.ToString("M/d")
+                    }
+                );
+            }
+        }
+
+        private void BuildGridFromData()
+        {
+            isLoadingData = true;
+
+            try
+            {
+                dataGridView1.Rows.Clear();
+
+                foreach(DayItem day in todoData.Days)
+                {
+                    AddDayColumn(day);
+                }
+                foreach(TaskItem task in todoData.Tasks)
+                {
+                    int rowIndex = dataGridView1.Rows.Add();
+
+                    DataGridViewRow row = dataGridView1.Rows[rowIndex];
+
+                    row.Tag = task.Id;
+
+                    row.Cells["TaskColumn"].Value = task.Name;
+
+                    foreach(DayItem day in todoData.Days)
+                    {
+                        row.Cells[day.Id].Value =
+                            task.CompletedDays.TryGetValue(day.Id, out bool completed) ? completed : false;
+                    }
+                }
+            }
+            finally
+            {
+                isLoadingData = false;
+            }
+        }
+
+        private void AddDayColumn(DayItem day)
+        {
+            
 
             DataGridViewCheckBoxColumn dayColumn = new DataGridViewCheckBoxColumn();
 
-            dayColumn.Name = "DayColumn" + dayColumnNumber;
+            dayColumn.Name = day.Id;
 
-            dayColumn.HeaderText = title;
+            dayColumn.HeaderText = day.Title;
 
             dayColumn.Width = 80;
+
+            dayColumn.TrueValue = true;
+            dayColumn.FalseValue = false;
 
             int optionsIndex = dataGridView1.Columns["OptionsColumn"].Index;
 
@@ -97,29 +204,174 @@ namespace TODO
 
         private void btnAddTask_Click(object? sender, EventArgs e)
         {
-            int rowIndex = dataGridView1.Rows.Add();
 
-            DataGridViewRow newRow =
-                dataGridView1.Rows[rowIndex];
+            isLoadingData = true;
 
-            // Set default task name.
-            newRow.Cells["TaskColumn"].Value = "New Task";
-
-            // Initialize checkbox columns.
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            int rowIndex;
+            
+            try
             {
-                if (column is DataGridViewCheckBoxColumn)
+                rowIndex = dataGridView1.Rows.Add();
+
+                DataGridViewRow newRow = dataGridView1.Rows[rowIndex];
+
+                newRow.Tag = Guid.NewGuid().ToString("N");
+
+                newRow.Cells["TaskColumn"].Value = "New Task";
+
+                foreach (DayItem day in todoData.Days)
                 {
-                    newRow.Cells[column.Index].Value = false;
+                    newRow.Cells[day.Id].Value = false;
                 }
             }
+            finally
+            {
+                isLoadingData = false;
+            }
 
-            // Select the task name.
-            dataGridView1.CurrentCell =
-                newRow.Cells["TaskColumn"];
+            SaveData();
 
-            // Start editing.
+            dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells["TaskColumn"];
+
             dataGridView1.BeginEdit(true);
+        }
+
+        private void SaveData()
+        {
+            if (isLoadingData)
+                return;
+
+            try
+            {
+                List<TaskItem> updatedTasks =
+                    new List<TaskItem>();
+
+                // Read every task currently displayed.
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.IsNewRow)
+                        continue;
+
+                    string taskId =
+                        row.Tag as string ??
+                        Guid.NewGuid().ToString("N");
+
+                    // Find the existing task, if one exists.
+                    TaskItem? task =
+                        todoData.Tasks.Find(t => t.Id == taskId);
+
+                    // Otherwise create a new task.
+                    if (task == null)
+                    {
+                        task = new TaskItem
+                        {
+                            Id = taskId
+                        };
+                    }
+
+                    task.Name =
+                        Convert.ToString(
+                            row.Cells["TaskColumn"].Value
+                        ) ?? "";
+
+                    // Rebuild the checkbox information.
+                    task.CompletedDays =
+                        new Dictionary<string, bool>();
+
+                    foreach (DayItem day in todoData.Days)
+                    {
+                        object? cellValue =
+                            row.Cells[day.Id].Value;
+
+                        bool completed =
+                            cellValue is bool value && value;
+
+                        task.CompletedDays[day.Id] = completed;
+                    }
+
+                    // Preserve the order in which rows appear.
+                    updatedTasks.Add(task);
+                }
+
+                // Update the saved task list.
+                todoData.Tasks = updatedTasks;
+
+                // Make sure the save directory exists.
+                string? directory =
+                    Path.GetDirectoryName(saveFilePatch);
+
+                if (directory != null)
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                // Convert our data to JSON.
+                string json = JsonSerializer.Serialize(
+                    todoData,
+                    new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    }
+                );
+
+                // Write the JSON file.
+                File.WriteAllText(saveFilePatch, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Could not save data:\n" + ex.Message,
+                    "Save Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void DataGridView1_CellValueChanged(
+    object? sender, DataGridViewCellEventArgs e)
+        {
+            if (isLoadingData)
+                return;
+
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            // Only save checkbox changes here.
+            if (dataGridView1.Columns[e.ColumnIndex]
+                is DataGridViewCheckBoxColumn)
+            {
+                SaveData();
+            }
+        }
+
+
+        private void DataGridView1_CellEndEdit(
+    object? sender, DataGridViewCellEventArgs e)
+        {
+            if (isLoadingData)
+                return;
+
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            if (dataGridView1.Columns[e.ColumnIndex].Name
+                == "TaskColumn")
+            {
+                SaveData();
+            }
+        }
+
+        private void DataGridView1_CurrentCellDirtyStateChanged(
+    object? sender, EventArgs e)
+        {
+            if (dataGridView1.IsCurrentCellDirty &&
+                dataGridView1.CurrentCell is DataGridViewCheckBoxCell)
+            {
+                dataGridView1.CommitEdit(
+                    DataGridViewDataErrorContexts.Commit
+                );
+            }
         }
 
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -139,11 +391,14 @@ namespace TODO
 
         private void DeleteTask_Click(object? sender, EventArgs e)
         {
-            if (selectedTaskRow >= 0 && selectedTaskRow < dataGridView1.Rows.Count)
+            if (selectedTaskRow >= 0 &&
+                selectedTaskRow < dataGridView1.Rows.Count)
             {
                 dataGridView1.Rows.RemoveAt(selectedTaskRow);
 
                 selectedTaskRow = -1;
+
+                SaveData();
             }
         }
 
@@ -154,7 +409,30 @@ namespace TODO
             if (string.IsNullOrWhiteSpace(title))
                 return;
 
-            AddDayColumn(title);
+            DayItem newDay = new DayItem
+            {
+                Title = title,
+            };
+
+            todoData.Days.Add(newDay);
+
+            isLoadingData = true;
+
+            try
+            {
+                AddDayColumn(newDay);
+
+                foreach(DataGridViewRow row in dataGridView1.Rows)
+                {
+                    row.Cells[newDay.Id].Value = false;
+                }
+            }
+            finally
+            {
+                isLoadingData = false;
+            }
+
+            SaveData();
         }
 
         private string AskForColumnTitle(string defaultText)
@@ -216,6 +494,13 @@ namespace TODO
 
         }
 
-        
+        private void Form1_FormClosing(
+    object? sender, FormClosingEventArgs e)
+        {
+            dataGridView1.EndEdit();
+
+            SaveData();
+        }
+
     }
 }
